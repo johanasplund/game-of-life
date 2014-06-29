@@ -21,5 +21,5 @@ optional arguments:
 
 ## TODO
 
-- Show a grid when in draw mode
+- ~~Show a grid when in draw mode~~
 - Enable the user to hold left click and hover over cells to toggle their states

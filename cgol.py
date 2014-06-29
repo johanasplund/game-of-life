@@ -7,6 +7,7 @@ import argparse
 
 PAUSED = None
 STEP_ONCE = None
+DRAW_MODE = None
 
 
 class Field(object):
@@ -40,11 +41,26 @@ def draw_field(Surface, surfsize, fieldclass, rectsize, rectcolor):
             if fieldclass.field[y][x] == "#":
                 pygame.draw.rect(Surface, rectcolor,
                                  [xcurs, ycurs, rectsize, rectsize])
+                pygame.draw.rect(Surface, (100, 100, 100),
+                                 [xcurs, ycurs, rectsize, rectsize], 1)
+
+
+def draw_grid(Surface, surfsize, fieldclass, rectsize, rectcolor):
+    for y in range(surfsize):
+        ycurs = y*rectsize
+        for x in range(surfsize):
+            xcurs = x*rectsize
+            if fieldclass.field[y][x] == "#":
+                pygame.draw.rect(Surface, rectcolor,
+                                 [xcurs, ycurs, rectsize, rectsize])
+            pygame.draw.rect(Surface, (100, 100, 100),
+                             [xcurs, ycurs, rectsize, rectsize], 1)
 
 
 def event_handler(screen, BG_COLOR, RECT_COLOR, field_scale, the_field):
     global PAUSED
     global STEP_ONCE
+    global DRAW_MODE
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return True
@@ -66,27 +82,35 @@ def event_handler(screen, BG_COLOR, RECT_COLOR, field_scale, the_field):
                 pygame.draw.rect(screen, BG_COLOR,
                                  [x, y, field_scale, field_scale])
                 the_field.field[yind][xind] = "."
+                if DRAW_MODE:
+                    pygame.draw.rect(screen, (100, 100, 100),
+                                     [x, y, field_scale, field_scale], 1)
             else:
                 pygame.draw.rect(screen, RECT_COLOR,
                                  [x, y, field_scale, field_scale])
+                pygame.draw.rect(screen, (100, 100, 100),
+                                 [x, y, field_scale, field_scale], 1)
                 the_field.field[yind][xind] = "#"
             pygame.display.flip()
     return False
 
 
-def main(size, draw_mode, speed):
+def main(size, speed):
     global PAUSED
     global STEP_ONCE
+    global DRAW_MODE
     field_scale = 10
     screen = pygame.display.set_mode((field_scale * size, field_scale * size))
     pygame.display.set_caption("Conway's game of life")
     RECT_COLOR = (255, 255, 255)
     BG_COLOR = (0, 0, 0)
     screen.fill(BG_COLOR)
-    if draw_mode:
+    if DRAW_MODE:
         PAUSED = True
         field = [["." for k in range(size)] for l in range(size)]
         the_field = Field(field)
+        draw_grid(screen, size, the_field, field_scale, RECT_COLOR)
+        DRAW_MODE = False
     else:
         PAUSED = False
         field = [[random.choice(["#"] + ["."]*5) for k in range(size)]
@@ -132,7 +156,7 @@ if __name__ == "__main__":
                         help="set the resolution of the window to "
                              "10*Nx10*N (default: 50)",
                         action="store", type=int)
-    parser.add_argument("-d", dest="draw_mode",
+    parser.add_argument("-d", dest="DRAW_MODE",
                         help="enable draw mode", action="store_true")
     args = parser.parse_args()
     if args.SPEED:
@@ -143,6 +167,7 @@ if __name__ == "__main__":
         size = args.N
     else:
         size = 50
+    DRAW_MODE = args.DRAW_MODE
     pygame.init()
-    main(size, args.draw_mode, SPEED)
+    main(size, SPEED)
     pygame.quit()
