@@ -163,5 +163,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     DRAW_MODE = args.DRAW_MODE
     pygame.init()
-    main(args.SIZE, args.SPEED)
+    main(args.N, args.SPEED)
     pygame.quit()
