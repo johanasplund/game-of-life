@@ -148,26 +148,20 @@ def main(size, speed):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="A simulation of Conway's "
+                                                 "Game of Life written in "
+                                                 "pygame.")
     parser.add_argument("-s", dest="SPEED",
                         help="specify time between ticks in ms (default: 20)",
-                        action="store", type=int)
-    parser.add_argument("-r", dest="N",
-                        help="set the resolution of the window to "
+                        action="store", type=int, default=20)
+    parser.add_argument("-S", dest="N",
+                        help="set the size of the window to "
                              "10*Nx10*N (default: 50)",
-                        action="store", type=int)
+                        action="store", type=int, default=50)
     parser.add_argument("-d", dest="DRAW_MODE",
                         help="enable draw mode", action="store_true")
     args = parser.parse_args()
-    if args.SPEED:
-        SPEED = args.SPEED
-    else:
-        SPEED = 20
-    if args.N:
-        size = args.N
-    else:
-        size = 50
     DRAW_MODE = args.DRAW_MODE
     pygame.init()
-    main(size, SPEED)
+    main(args.SIZE, args.SPEED)
     pygame.quit()

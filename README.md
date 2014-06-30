@@ -5,12 +5,15 @@ A simple script written in python 3.4.1 simulating Conway's game of life using p
 ## Usage
 
 ```
-usage: cgol.py [-h] [-s SPEED] [-r N] [-d]
+$ python cgol.py -h
+usage: cgol.py [-h] [-s SPEED] [-S N] [-d]
+
+A simulation of Conway's Game of Life written in pygame.
 
 optional arguments:
   -h, --help  show this help message and exit
   -s SPEED    specify time between ticks in ms (default: 20)
-  -r N        set the resolution of the window to 10*Nx10*N (default: 50)
+  -S N        set the size of the window to 10*Nx10*N (default: 50)
   -d          enable draw mode
 ```
 
